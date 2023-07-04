@@ -57,7 +57,7 @@ namespace ESG_Console.Process
 
             try
             {
-                _parserService.ParseAndSendCustomerData(input);
+                _parserService.ParseAndSendCustomerDetails(input);
                 Console.WriteLine("File parsed and sent");
             }
             catch (Exception ex)

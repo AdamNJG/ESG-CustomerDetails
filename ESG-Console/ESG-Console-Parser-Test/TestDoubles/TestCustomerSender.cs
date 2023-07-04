@@ -5,14 +5,14 @@ namespace ESG_Console_Parser_Test.TestDoubles
 {
     internal class TestCustomerSender : ICustomerSender
     {
-        public List<CustomerDataDto> Customers { get; private set; }
+        public List<CustomerDetailsDto> Customers { get; private set; }
 
         public TestCustomerSender()
         {
-            Customers = new List<CustomerDataDto>();
+            Customers = new List<CustomerDetailsDto>();
         }
 
-        public Task SendCustomerData(CustomerDataDto data)
+        public Task SendCustomerDetails(CustomerDetailsDto data)
         {
             Customers.Add(data);
             return Task.CompletedTask;

@@ -23,10 +23,10 @@ namespace ESG_Console_Parser_Test
         [TestMethod]
         public void ParserService_ReadFile_MatchesSource()
         {
-            CustomerData data = ParserServiceTestHelper.CreateTestCustomerData();
+            CustomerDetailsDto data = ParserServiceTestHelper.CreateTestCustomerDetails();
             ParserServiceTestHelper.WriteCsv(testFilePath, data);
 
-            CustomerData readData = CsvParserService.ParseCustomerData(testFilePath).First();
+            CustomerDetailsDto readData = CsvParserService.ParseCustomerDetails(testFilePath).First();
 
             readData.Should().BeEquivalentTo(readData);
         }
@@ -34,10 +34,10 @@ namespace ESG_Console_Parser_Test
         [TestMethod]
         public void ParserService_ReadFileMultiple_MatchesSource()
         {
-            List<CustomerData> data = ParserServiceTestHelper.CreateTestCustomerDataList();
+            List<CustomerDetailsDto> data = ParserServiceTestHelper.CreateTestCustomerDetailsList();
             ParserServiceTestHelper.WriteCsvMultipleRecords(testFilePath, data);
 
-            List<CustomerData> readData = CsvParserService.ParseCustomerData(testFilePath);
+            List<CustomerDataDto> readData = CsvParserService.ParseCustomerData(testFilePath);
 
             readData.Should().BeEquivalentTo(data);
         }
@@ -47,7 +47,7 @@ namespace ESG_Console_Parser_Test
         {
             Action act = () =>
             {
-                List<CustomerData> readData = CsvParserService.ParseCustomerData(testFilePath);
+                List<CustomerDataDto> readData = CsvParserService.ParseCustomerData(testFilePath);
             };
 
             act.Should().Throw<FileNotFoundException>();
@@ -60,7 +60,7 @@ namespace ESG_Console_Parser_Test
 
             Action act = () =>
             {
-                List<CustomerData> readData = CsvParserService.ParseCustomerData(testFilePath);
+                List<CustomerDataDto> readData = CsvParserService.ParseCustomerData(testFilePath);
             };
 
             act.Should().Throw<IOException>()
@@ -70,16 +70,16 @@ namespace ESG_Console_Parser_Test
         [TestMethod]
         public void ParserService_SendDataMultipleCustomers()
         {
-            List<CustomerDataDto> data = ParserServiceTestHelper.CreateTestCustomerDataList();
+            List<CustomerDetailsDto> data = ParserServiceTestHelper.CreateTestCustomerDetailsList();
             ParserServiceTestHelper.WriteCsvMultipleRecords(testFilePath, data);
 
             TestCustomerSender mockSender = new TestCustomerSender();
 
             CsvParserService csvParser = new CsvParserService(mockSender);
 
-            csvParser.ParseAndSendCustomerData(testFilePath);
+            csvParser.ParseAndSendCustomerDetails(testFilePath);
 
-            List<CustomerDataDto> retrievedData = mockSender.Customers;
+            List<CustomerDetailsDto> retrievedData = mockSender.Customers;
 
             retrievedData.Should().BeEquivalentTo(data);
         }
@@ -93,7 +93,7 @@ namespace ESG_Console_Parser_Test
 
             Action act = () =>
             {
-                csvParser.ParseAndSendCustomerData(testFilePath);
+                csvParser.ParseAndSendCustomerDetails(testFilePath);
             };
 
             act.Should().Throw<FileNotFoundException>();
@@ -110,7 +110,7 @@ namespace ESG_Console_Parser_Test
 
             Action act = () =>
             {
-                csvParser.ParseAndSendCustomerData(testFilePath);
+                csvParser.ParseAndSendCustomerDetails(testFilePath);
             };
 
             act.Should().Throw<IOException>()

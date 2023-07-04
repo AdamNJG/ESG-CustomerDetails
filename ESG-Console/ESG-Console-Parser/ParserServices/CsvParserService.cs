@@ -13,9 +13,9 @@ namespace ESG_Console_Parser.ParserServices
             _customerSender = customerSender;
         }
 
-        private static List<CustomerDataDto> ParseCustomerData(string path)
+        private static List<CustomerDetailsDto> ParseCustomerDetails(string path)
         {
-            List<CustomerDataDto> customers = new List<CustomerDataDto>();
+            List<CustomerDetailsDto> customers = new List<CustomerDetailsDto>();
             using (TextFieldParser parser = new TextFieldParser(path))
             {
                 parser.TextFieldType = FieldType.Delimited;
@@ -32,7 +32,7 @@ namespace ESG_Console_Parser.ParserServices
                     string[] fields = parser.ReadFields();
                     count++;
 
-                    customers.Add(new CustomerDataDto(
+                    customers.Add(new CustomerDetailsDto(
                         fields[0],
                         fields[1],
                         fields[2],
@@ -48,13 +48,13 @@ namespace ESG_Console_Parser.ParserServices
             return customers;
         }
 
-        public void ParseAndSendCustomerData(string path)
+        public void ParseAndSendCustomerDetails(string path)
         {
-            List<CustomerDataDto> customerData = ParseCustomerData(path);
+            List<CustomerDetailsDto> customerDetails = ParseCustomerDetails(path);
 
-            customerData.ForEach(c =>
+            customerDetails.ForEach(c =>
             {
-                _customerSender.SendCustomerData(c);
+                _customerSender.SendCustomerDetails(c);
             });
         }
     }

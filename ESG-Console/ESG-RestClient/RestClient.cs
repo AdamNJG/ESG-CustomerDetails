@@ -15,11 +15,11 @@ namespace ESG_RestClient
             _configuration = configuration;
         }
 
-        public async Task SendCustomerData(CustomerDataDto data)
+        public async Task SendCustomerDetails(CustomerDetailsDto details)
         {
             using (HttpClient client = new HttpClient())
             {
-                StringContent content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+                StringContent content = new StringContent(JsonSerializer.Serialize(details), Encoding.UTF8, "application/json");
 
                 string host = _configuration.GetSection("AppSettings:Api:Host").Value;
 
