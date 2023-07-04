@@ -15,7 +15,7 @@ namespace ESG_RestClient
             _configuration = configuration;
         }
 
-        public async Task SendCustomerData(CustomerData data)
+        public async Task SendCustomerData(CustomerDataDto data)
         {
             using (HttpClient client = new HttpClient())
             {

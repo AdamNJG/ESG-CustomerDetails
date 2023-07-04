@@ -55,22 +55,15 @@ namespace ESG_Console.Process
 
             string input = Console.ReadLine();
 
-            if (input == null || !File.Exists(input))
-            {
-                Console.WriteLine("invalid input or file not found, returning to main menu");
-                return;
-            }
-
             try
             {
                 _parserService.ParseAndSendCustomerData(input);
+                Console.WriteLine("File parsed and sent");
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Console.WriteLine(ex.Message);
             }
-
-            Console.WriteLine("File parsed and sent");
         }
     }
 }

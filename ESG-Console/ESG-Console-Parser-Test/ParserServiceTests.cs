@@ -52,7 +52,7 @@ namespace ESG_Console_Parser_Test
 
             act.Should().Throw<FileNotFoundException>();
         }
-
+        
         [TestMethod]
         public void ParserService_ReadFileEmpty_ThrowsException()
         {
@@ -70,7 +70,7 @@ namespace ESG_Console_Parser_Test
         [TestMethod]
         public void ParserService_SendDataMultipleCustomers()
         {
-            List<CustomerData> data = ParserServiceTestHelper.CreateTestCustomerDataList();
+            List<CustomerDataDto> data = ParserServiceTestHelper.CreateTestCustomerDataList();
             ParserServiceTestHelper.WriteCsvMultipleRecords(testFilePath, data);
 
             TestCustomerSender mockSender = new TestCustomerSender();
@@ -79,7 +79,7 @@ namespace ESG_Console_Parser_Test
 
             csvParser.ParseAndSendCustomerData(testFilePath);
 
-            List<CustomerData> retrievedData = mockSender.Customers;
+            List<CustomerDataDto> retrievedData = mockSender.Customers;
 
             retrievedData.Should().BeEquivalentTo(data);
         }

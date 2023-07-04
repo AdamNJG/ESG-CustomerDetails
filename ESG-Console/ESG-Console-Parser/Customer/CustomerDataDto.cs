@@ -1,6 +1,6 @@
 ﻿namespace ESG_Console_Parser.Customer
 {
-    public class CustomerData
+    public class CustomerDataDto
     {
         public string CustomerRef { get; private set; }
         public string CustomerName { get; private set; }
@@ -11,7 +11,7 @@
         public string Country { get; private set; }
         public string PostCode { get; private set; }
 
-        public CustomerData(string customerRef, string customerName, string addressLine1, string addressLine2, string town, string county, string country, string postCode)
+        public CustomerDataDto(string customerRef, string customerName, string addressLine1, string addressLine2, string town, string county, string country, string postCode)
         {
             CustomerRef = customerRef;
             CustomerName = customerName;

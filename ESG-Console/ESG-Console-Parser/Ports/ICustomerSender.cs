@@ -4,6 +4,6 @@ namespace ESG_Console_Parser.Ports
 {
     public interface ICustomerSender
     {
-        public Task SendCustomerData(CustomerData data);
+        public Task SendCustomerData(CustomerDataDto data);
     }
 }
