@@ -48,14 +48,17 @@ namespace ESG_Console_Parser.ParserServices
             return customers;
         }
 
-        public void ParseAndSendCustomerDetails(string path)
+        public async Task ParseAndSendCustomerDetails(string path)
         {
             List<CustomerDetailsDto> customerDetails = ParseCustomerDetails(path);
 
-            customerDetails.ForEach(c =>
+            foreach (CustomerDetailsDto customerDetailsDto in customerDetails)
             {
-                _customerSender.SendCustomerDetails(c);
-            });
+                await Task.Run(async () =>
+                {
+                    await _customerSender.SendCustomerDetails(customerDetailsDto);
+                });
+            }
         }
     }
 }

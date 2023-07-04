@@ -19,6 +19,7 @@ namespace ESG_RestClient
         {
             using (HttpClient client = new HttpClient())
             {
+                client.Timeout = TimeSpan.FromSeconds(20);
                 StringContent content = new StringContent(JsonSerializer.Serialize(details), Encoding.UTF8, "application/json");
 
                 string host = _configuration.GetSection("AppSettings:Api:Host").Value;
@@ -29,15 +30,13 @@ namespace ESG_RestClient
                     return;
                 }
 
-                HttpResponseMessage response = await client.PostAsync(Path.Combine(host, "api/customerdetails/addcustomers"), content);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    string responseContent = await response.Content.ReadAsStringAsync();
+                    HttpResponseMessage response = await client.PostAsync(Path.Combine(host, "api/customerdetails/addcustomers"), content);
                 }
-                else
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Request failed with status code: " + response.StatusCode);
+                    Console.WriteLine($"Error: {ex.Message}");
                 }
             }
         }
