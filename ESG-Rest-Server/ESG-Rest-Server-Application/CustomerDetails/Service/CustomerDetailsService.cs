@@ -16,16 +16,18 @@ namespace ESG_Rest_Server_Application.CustomerDetails
             _logger = logger;
         }
 
-        public void StoreCustomerDetails(CustomerDetailsInDto inputDetails)
+        public CreateResult StoreCustomerDetails(CustomerDetailsInDto inputDetails)
         {
             try
             {
                 CustomerData details = new CustomerData(inputDetails);
                 _customerDetailsStorage.StoreCustomerDetails(details.GetDto());
+                return new CreateResult(true);
             }
             catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, ex.Message);
+                return new CreateResult(false, ex.Message);
             }
         }
 

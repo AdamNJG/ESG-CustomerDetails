@@ -1,4 +1,5 @@
 using ESG_Rest_Server_Application.CustomerDetails;
+using ESG_Rest_Server_Application.CustomerDetails.Domain;
 using ESG_Rest_Server_Application.CustomerDetails.Dto;
 using ESG_Rest_Server_Test.Helpers;
 using ESG_Rest_Server_Test.TestDoubles;
@@ -10,7 +11,7 @@ namespace ESG_Rest_Server_Test
     public class CustomerDetailsServiceTest
     {
         [TestMethod]
-        public void CustomerDetailsService_StoreCustomerDetails()
+        public void CustomerDetailsService_StoreCustomerDetails_InDtoMatchesOutReturnsTrue()
         {
             CustomerDetailsStorage mockStorage = new CustomerDetailsStorage();
             CustomerDetailsServiceLoggerSpy loggerSpy = new CustomerDetailsServiceLoggerSpy();
@@ -19,9 +20,12 @@ namespace ESG_Rest_Server_Test
 
             CustomerDetailsInDto inDto = CustomerDetailsTestHelper.CreateTestCustomerData();
 
-            customerDetailsService.StoreCustomerDetails(inDto);
+            CreateResult result = customerDetailsService.StoreCustomerDetails(inDto);
 
             CustomerDetailsOutDto outDto = mockStorage.CustomerDetails.First();
+
+            result.Success.Should().Be(true);
+            result.Message.Should().Be(String.Empty);
 
             outDto.CustomerRef.Should().Be(Guid.Parse(inDto.CustomerRef));
             outDto.CustomerName.Should().Be(inDto.CustomerName);
@@ -34,7 +38,7 @@ namespace ESG_Rest_Server_Test
         }
 
         [TestMethod]
-        public void CustomerDetailsService_ExceptionThrown_EntityFrameworkErrorLogged()
+        public void CustomerDetailsService_ExceptionThrown_EntityFrameworkErrorLoggedReturnsFalse()
         {
             ErroringDetailsStorage mockStorage = new ErroringDetailsStorage();
             CustomerDetailsServiceLoggerSpy loggerSpy = new CustomerDetailsServiceLoggerSpy();
@@ -43,7 +47,10 @@ namespace ESG_Rest_Server_Test
 
             CustomerDetailsInDto inDto = CustomerDetailsTestHelper.CreateTestCustomerData();
 
-            customerDetailsService.StoreCustomerDetails(inDto);
+            CreateResult result = customerDetailsService.StoreCustomerDetails(inDto);
+
+            result.Success.Should().Be(true);
+            result.Message.Should().Be("Exception of type 'Microsoft.EntityFrameworkCore.DbUpdateException' was thrown.");
 
             loggerSpy.LogEntries.Count.Should().Be(1);
             loggerSpy.LogEntries.First().Should().Be("Exception of type 'Microsoft.EntityFrameworkCore.DbUpdateException' was thrown.");
@@ -81,7 +88,7 @@ namespace ESG_Rest_Server_Test
 
             CustomerDetailsService customerDetailsService = new CustomerDetailsService(mockStorage, loggerSpy);
 
-            CustomerDetailsInDto inDto = CustomerDetailsTestHelper.CreateTestCustomerData();
+            CustomerDetailsTestHelper.CreateTestCustomerData();
 
             customerDetailsService.GetCustomerDetails(Guid.NewGuid());
 
