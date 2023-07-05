@@ -17,7 +17,7 @@ namespace ESG_Console.Process
             {
                 Console.WriteLine("Enter a command (type 'exit' to quit or 'help' to get help):");
 
-                string input = Console.ReadLine();
+                string input = GetInput();
 
                 if (input != null && input.Equals("exit", StringComparison.OrdinalIgnoreCase))
                 {
@@ -46,24 +46,41 @@ namespace ESG_Console.Process
 
         private static void ListHelp()
         {
-            Console.WriteLine("To Parse a CSV file use the command \"parse\"");
+            Console.WriteLine("\"parse\": Parse a CSV file use the command ");
         }
 
         private void ParseMenu()
         {
-            Console.WriteLine("Please enter the path to the file that you wish to send");
+            while (true)
+            {
+                Console.WriteLine("Please enter the path to the file that you wish to send (do not wrap the path in quotes)");
 
+                string input = GetInput();
+
+                try
+                {
+                    _parserService.ParseAndSendCustomerDetails(input);
+                    Console.WriteLine("File parsed and sent");
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+        }
+
+        private string GetInput()
+        {
             string input = Console.ReadLine();
 
-            try
+            if (input == null)
             {
-                _parserService.ParseAndSendCustomerDetails(input);
-                Console.WriteLine("File parsed and sent");
+                return input;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+
+            return input.Trim();
         }
     }
 }

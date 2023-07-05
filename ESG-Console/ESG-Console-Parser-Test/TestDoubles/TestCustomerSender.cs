@@ -12,10 +12,9 @@ namespace ESG_Console_Parser_Test.TestDoubles
             Customers = new List<CustomerDetailsDto>();
         }
 
-        public Task SendCustomerDetails(CustomerDetailsDto data)
+        public void SendCustomerDetails(CustomerDetailsDto data)
         {
             Customers.Add(data);
-            return Task.CompletedTask;
         }
     }
 }

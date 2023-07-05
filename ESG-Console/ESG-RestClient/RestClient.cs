@@ -15,11 +15,11 @@ namespace ESG_RestClient
             _configuration = configuration;
         }
 
-        public async Task SendCustomerDetails(CustomerDetailsDto details)
+        public void SendCustomerDetails(CustomerDetailsDto details)
         {
             using (HttpClient client = new HttpClient())
             {
-                client.Timeout = TimeSpan.FromSeconds(20);
+                client.Timeout = TimeSpan.FromSeconds(15);
                 StringContent content = new StringContent(JsonSerializer.Serialize(details), Encoding.UTF8, "application/json");
 
                 string host = _configuration.GetSection("AppSettings:Api:Host").Value;
@@ -32,7 +32,16 @@ namespace ESG_RestClient
 
                 try
                 {
-                    HttpResponseMessage response = await client.PostAsync(Path.Combine(host, "api/customerdetails/addcustomers"), content);
+                    HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, Path.Combine(host, "api/customerdetails/addcustomers"))
+                    {
+                        Content = content
+                    };
+
+                    HttpResponseMessage response = client.Send(message);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine($"Couldn't insert Customer :${details.CustomerRef}, {response.StatusCode}:{response.Content}");
+                    }
                 }
                 catch (Exception ex)
                 {

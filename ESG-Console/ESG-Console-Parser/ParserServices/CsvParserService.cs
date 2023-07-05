@@ -26,11 +26,13 @@ namespace ESG_Console_Parser.ParserServices
                     throw new IOException($"The File at path {path} was empty");
                 }
 
-                int count = 0;
                 while (!parser.EndOfData)
                 {
-                    string[] fields = parser.ReadFields();
-                    count++;
+                    string[] fields = parser.ReadFields()!; // this is suppressing a null warning, when I have already added a nullcheck.
+                    if (fields == null)
+                    {
+                        continue;
+                    }
 
                     customers.Add(new CustomerDetailsDto(
                         fields[0],
@@ -48,16 +50,13 @@ namespace ESG_Console_Parser.ParserServices
             return customers;
         }
 
-        public async Task ParseAndSendCustomerDetails(string path)
+        public void ParseAndSendCustomerDetails(string path)
         {
             List<CustomerDetailsDto> customerDetails = ParseCustomerDetails(path);
 
             foreach (CustomerDetailsDto customerDetailsDto in customerDetails)
             {
-                await Task.Run(async () =>
-                {
-                    await _customerSender.SendCustomerDetails(customerDetailsDto);
-                });
+                _customerSender.SendCustomerDetails(customerDetailsDto);
             }
         }
     }
