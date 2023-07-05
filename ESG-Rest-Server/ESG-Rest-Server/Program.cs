@@ -1,4 +1,7 @@
 using ESG_Rest_Server_Api.Controllers;
+using ESG_Rest_Server_Application.CustomerDetails;
+using ESG_Rest_Server_Application.CustomerDetails.interfaces;
+using ESG_Rest_Server_Repository.Repositories;
 
 namespace ESG_Rest_Server
 {
@@ -17,6 +20,9 @@ namespace ESG_Rest_Server
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddLogging();
+            builder.Services.AddSingleton<ICustomerDetailsStorage, CustomerDetailsRepository>();
+            builder.Services.AddScoped<CustomerDetailsService>();
 
             var app = builder.Build();
 

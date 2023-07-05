@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ESG-Rest-Server-Api\ESG-Rest-Server-Api.csproj" />
     <ProjectReference Include="..\ESG-Rest-Server-Application\ESG-Rest-Server-Application.csproj" />
+    <ProjectReference Include="..\ESG-Rest-Server-Repository\ESG-Rest-Server-Repository.csproj" />
   </ItemGroup>
 
 </Project>
